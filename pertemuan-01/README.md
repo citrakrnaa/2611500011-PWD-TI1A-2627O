@@ -13,7 +13,7 @@ Jawaban:
 HTTP Request adalah permintaan yang dikirim oleh client atau browser kepada server untuk meminta suatu data atau halaman website.
 Sedangkan HTTP Response adalah jawaban yang diberikan oleh server kepada client setelah menerima request.
 
-5. Apa fungsi HTML, CSS, JavaScript, PHP, dan MySQL dalam pemrograman web?
+4. Apa fungsi HTML, CSS, JavaScript, PHP, dan MySQL dalam pemrograman web?
 Jawaban:
 Masing-masing teknologi memiliki fungsi yang berbeda:
 * HTML digunakan untuk membuat struktur atau isi website, seperti judul, teks, gambar, dan tombol.
