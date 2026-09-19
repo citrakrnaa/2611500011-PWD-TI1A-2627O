@@ -1,0 +1,1 @@
+#bukti belajar p6
