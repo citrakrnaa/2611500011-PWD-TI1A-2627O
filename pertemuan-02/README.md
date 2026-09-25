@@ -12,9 +12,9 @@ elemen semantik, teks, daftar, tautan, dan gambar.
 
 ## Validasi HTML
 - Berkas yang divalidasi: `index.html`
-- Galat yang ditemukan: Belum dilakukan validasi.
-- Perbaikan yang dilakukan: Belum dilakukan.
-- Hasil validasi akhir: Belum dilakukan.
+- Galat yang ditemukan: Tidak ada galat setelah pemeriksaan akhir.
+- Perbaikan yang dilakukan: Memperbaiki struktur HTML dan memastikan atribut serta elemen digunakan dengan benar.
+- Hasil validasi akhir: `index.html` berhasil divalidasi tanpa galat.
 
 ## GitHub Pages
-URL: [
+URL:  https://github.com/citrakrnaa/pemrograman-web-dasar
