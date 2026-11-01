@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Saya - Pertemuan 2</title>
 </head>
+
 <body>
 
     <header>
@@ -28,11 +30,7 @@
             <article>
                 <h3>Profil</h3>
 
-                <img
-                    src="img/foto-profil.jpeg"
-                    alt="Foto profil saya"
-                    width="200"
-                >
+                <img src="img/foto-profil.jpeg" alt="Foto profil saya" width="200">
 
                 <p>
                     Halo, nama saya Citra. Saya sedang mempelajari
@@ -70,22 +68,60 @@
             </article>
         </section>
 
-        <section id="kontak">
+        <section id="contact">
             <h2>Kontak</h2>
+            <p>Kunjungi <a href="https://github.com/username">profil GitHub saya</a>.</p>
+            <form action="index.html" method="get">
+                <div class="form-group">
+                    <label for="nama">citra kirana</label><br>
+                    <input class="input-form" type="text" id="nama" name="nama" placeholder="citra kirana"
+                        minlength="3" maxlength="50" required>
 
-            <p>
-                Profil GitHub saya dapat dilihat melalui
-                <a href="https://github.com/citrakrnaa">
-                    GitHub
-                </a>.
-            </p>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">2611500011@mahasiswa.atmaluhur.ac.id</label><br>
+                    <input class="input-form" type="email" id="email" name="email" placeholder="2611500011@mahasiswa.atmaluhur.ac.id"
+                        required>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="semester">1</label><br>
+                    <input class="input-form" type="number" id="semester" name="semester" min="1" max="14" required>
+
+                </div>
+
+                <div class="form-group">
+                    <p>Jenis Pesan</p>
+                    <input type="radio" id="pertanyaan" name="jenis_pesan" value="pertanyaan" required>
+                    <label for="pertanyaan">Pertanyaan</label>
+                    <input type="radio" id="saran" name="jenis_pesan" value="saran">
+                    <label for="saran">Saran</label>
+                </div>
+                <div class="form-group">
+                    <p>Topik yang Diminati</p>
+                    <input type="checkbox" id="minat-html" name="minat" value="HTML">
+                    <label for="minat-html">HTML</label>
+                    <input type="checkbox" id="minat-css" name="minat" value="CSS">
+                    <label for="minat-css">CSS</label>
+                </div>
+
+                <div class="form-group">
+                    <label for="prodi">Program Studi</label><br>
+                    <select class="input-form" id="prodi" name="prodi" required>
+                        <option value="TI">Teknik Informatika</option>
+                    </select>
+
+                </div>
+
+                <div class="form-group">
+                    <label for="pesan">Pesan</label><br>
+                    <textarea class="input-form" id="pesan" name="pesan" maxlength="300" placeholder="Tulis pesan Anda"
+                        required></textarea>
+
+                </div>
+                <button type="submit">Kirim</button>
+                <button type="reset">Batal</button>
+            </form>
         </section>
-
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Profil Saya - Pertemuan 2</p>
-    </footer>
-
-</body>
-</html>
