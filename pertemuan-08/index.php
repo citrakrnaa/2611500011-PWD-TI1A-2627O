@@ -1,4 +1,68 @@
 <?php
+// 1. Inisialisasi Session untuk Pola PRG (Post-Redirect-Get)
+session_start();
+
+$errors = [];
+$data_kegiatan = null;
+
+// 2. Ambil data atau error dari session jika ada
+if (isset($_SESSION['data_kegiatan'])) {
+    $data_kegiatan = $_SESSION['data_kegiatan'];
+    unset($_SESSION['data_kegiatan']); // Hapus session agar tidak terus tampil saat refresh
+}
+
+if (isset($_SESSION['form_errors'])) {
+    $errors = $_SESSION['form_errors'];
+    unset($_SESSION['form_errors']);
+}
+
+// 3. Pemrosesan data saat Formulir dikirim (Metode POST)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rencana'])) {
+    // Normalisasi / Sanitasi Masukan (trim spasi berlebih)
+    $nama      = trim($_POST['nama_kegiatan'] ?? '');
+    $kategori  = trim($_POST['kategori_kegiatan'] ?? '');
+    $tanggal   = trim($_POST['tanggal_pelaksanaan'] ?? '');
+    $lokasi    = trim($_POST['lokasi_kegiatan'] ?? '');
+    $deskripsi = trim($_POST['deskripsi_kegiatan'] ?? '');
+
+    // Validasi Sisi Peladen (PHP Server-Side Validation)
+    if (empty($nama)) {
+        $errors[] = 'Nama Kegiatan wajib diisi.';
+    }
+    if (empty($kategori)) {
+        $errors[] = 'Kategori Kegiatan wajib dipilih.';
+    }
+    if (empty($tanggal)) {
+        $errors[] = 'Tanggal Pelaksanaan wajib diisi.';
+    }
+    if (empty($lokasi)) {
+        $errors[] = 'Lokasi Kegiatan wajib diisi.';
+    }
+    if (empty($deskripsi)) {
+        $errors[] = 'Deskripsi Kegiatan wajib diisi.';
+    }
+
+    // Jika validasi lolos
+    if (empty($errors)) {
+        $_SESSION['data_kegiatan'] = [
+            'nama'      => $nama,
+            'kategori'  => $kategori,
+            'tanggal'   => $tanggal,
+            'lokasi'    => $lokasi,
+            'deskripsi' => $deskripsi
+        ];
+
+        // Pola Post-Redirect-Get (PRG)
+        header('Location: ' . $_SERVER['PHP_SELF'] . '#rencana-kegiatan');
+        exit;
+    } else {
+        // Simpan pesan error ke session jika validasi gagal
+        $_SESSION['form_errors'] = $errors;
+        header('Location: ' . $_SERVER['PHP_SELF'] . '#rencana-kegiatan');
+        exit;
+    }
+}
+?><?php
 session_start();
 
 // P7: Memproses data formulir dan menyimpannya ke dalam session.
@@ -103,8 +167,8 @@ switch ($programStudi) {
 			<ul id="navMenu">
 				<li><a href="#home">Beranda</a></li>
 				<li><a href="#about">Tentang</a></li>
-				<li><a href="#contact">Kontak</a></li>
 				<li><a href="#rencana-kegiatan">rencana kegiatan</a></li>
+				<li><a href="#contact">Kontak</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -170,6 +234,101 @@ switch ($programStudi) {
 					?>
 				</ol>
 			</article>
+
+
+		<!-- ================= SECTION RENCANA KEGIATAN MAHASISWA ================= -->
+<section id="rencana-kegiatan" class="contact-section">
+    <div class="container">
+        <h2>Rencana Kegiatan Mahasiswa</h2>
+
+        <!-- Tampilkan Pesan Error Server-Side (PHP) Jika Validasi Gagal -->
+        <?php if (!empty($errors)): ?>
+            <div class="alert alert-danger" style="color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                <ul style="margin: 0; padding-left: 20px;">
+                    <?php foreach ($errors as $error): ?>
+                        <li><?= htmlspecialchars($error, ENT_QUOTES, 'UTF-8') ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </div>
+        <?php endif; ?>
+
+        <!-- Tempat Pesan Error Client-Side (JavaScript) -->
+        <div id="js-error-message" style="display: none; color: #721c24; background-color: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; margin-bottom: 15px;"></div>
+
+        <!-- Formulir Rencana Kegiatan -->
+        <form id="form-rencana-kegiatan" action="" method="POST">
+            <div class="form-group">
+                <label for="nama_kegiatan">Nama Kegiatan:</label>
+                <input type="text" id="nama_kegiatan" name="nama_kegiatan" class="form-control" placeholder="Masukkan nama kegiatan">
+            </div>
+
+            <div class="form-group">
+                <label for="kategori_kegiatan">Kategori Kegiatan:</label>
+                <select id="kategori_kegiatan" name="kategori_kegiatan" class="form-control">
+                    <option value="">-- Pilih Kategori --</option>
+                    <option value="Akademik">Akademik</option>
+                    <option value="Non-Akademik">Non-Akademik</option>
+                    <option value="Organisasi">Organisasi</option>
+                    <option value="Pengabdian Masyarakat">Pengabdian Masyarakat</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="tanggal_pelaksanaan">Tanggal Pelaksanaan:</label>
+                <input type="date" id="tanggal_pelaksanaan" name="tanggal_pelaksanaan" class="form-control">
+            </div>
+
+            <div class="form-group">
+                <label for="lokasi_kegiatan">Lokasi Kegiatan:</label>
+                <input type="text" id="lokasi_kegiatan" name="lokasi_kegiatan" class="form-control" placeholder="Masukkan lokasi kegiatan">
+            </div>
+
+            <div class="form-group">
+                <label for="deskripsi_kegiatan">Deskripsi Kegiatan:</label>
+                <textarea id="deskripsi_kegiatan" name="deskripsi_kegiatan" class="form-control" rows="4" placeholder="Tuliskan deskripsi singkat kegiatan"></textarea>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" name="submit_rencana" class="btn btn-primary">Kirim</button>
+                <button type="reset" class="btn btn-secondary">Batal</button>
+            </div>
+        </form>
+
+        <!-- Penampilan Data Hasil Input setelah Proses PRG (Sanitasi Output XSS) -->
+        <?php if ($data_kegiatan): ?>
+            <div class="result-box" style="margin-top: 30px; padding: 20px; border: 1px solid #c3e6cb; background-color: #d4edda; color: #155724; border-radius: 5px;">
+                <h3>Data Rencana Kegiatan Berhasil Disimpan!</h3>
+                <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #c3e6cb;">Nama Kegiatan</th>
+                        <td style="padding: 8px; border-bottom: 1px solid #c3e6cb;"><?= htmlspecialchars($data_kegiatan['nama'], ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #c3e6cb;">Kategori</th>
+                        <td style="padding: 8px; border-bottom: 1px solid #c3e6cb;"><?= htmlspecialchars($data_kegiatan['kategori'], ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #c3e6cb;">Tanggal Pelaksanaan</th>
+                        <td style="padding: 8px; border-bottom: 1px solid #c3e6cb;"><?= htmlspecialchars($data_kegiatan['tanggal'], ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #c3e6cb;">Lokasi</th>
+                        <td style="padding: 8px; border-bottom: 1px solid #c3e6cb;"><?= htmlspecialchars($data_kegiatan['lokasi'], ENT_QUOTES, 'UTF-8') ?></td>
+                    </tr>
+                    <tr>
+                        <th style="text-align: left; padding: 8px; border-bottom: 1px solid #c3e6cb;">Deskripsi</th>
+                        <td style="padding: 8px; border-bottom: 1px solid #c3e6cb;"><?= nl2br(htmlspecialchars($data_kegiatan['deskripsi'], ENT_QUOTES, 'UTF-8')) ?></td>
+                    </tr>
+                </table>
+            </div>
+        <?php endif; ?>
+    </div>
+</section>
+
+<!-- Section Contact Tetap Berada di Bawahnya -->
+<section id="contact">
+    <!-- Isi section contact bawaan -->
+</section>
 		</section>
 
 		<section id="contact">
@@ -258,40 +417,6 @@ switch ($programStudi) {
 				<button type="reset">Batal</button>
 				<p class="form-feedback" data-form-feedback aria-live="polite"></p>
 
-		</section>
-
-		<section id="rencana-kegiatan">
-			
-
-    <form id="formKegiatan" action="proses.php" method="POST">
-        <div>
-            <label for="nama">Nama Kegiatan:</label>
-            <input type="text" id="nama" name="nama_kegiatan" required>
-        </div>
-        <div>
-            <label for="kategori">Kategori Kegiatan:</label>
-            <input type="text" id="kategori" name="kategori_kegiatan" required>
-        </div>
-        <div>
-            <label for="tanggal">Tanggal Pelaksanaan:</label>
-            <input type="date" id="tanggal" name="tanggal_pelaksanaan" required>
-        </div>
-        <div>
-            <label for="lokasi">Lokasi Kegiatan:</label>
-            <input type="text" id="lokasi" name="lokasi_kegiatan" required>
-        </div>
-        <div>
-            <label for="deskripsi">Deskripsi Kegiatan:</label>
-            <textarea id="deskripsi" name="deskripsi_kegiatan" rows="4" required></textarea>
-        </div>
-
-        <button type="submit">Kirim</button>
-        <button type="reset">Batal</button>
-    </form>
-</section>
-
-
-
 
 			</form>
 
@@ -317,6 +442,53 @@ switch ($programStudi) {
 		<p>&copy; <?= date("Y") ?> <?php echo $citra; ?> [<?= $nim ?>]</p>
 	</footer>
 	<script src="script.js"></script>
+    }<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form-rencana-kegiatan');
+    const errorBox = document.getElementById('js-error-message');
+
+    if (form) {
+        form.addEventListener('submit', function(e) {
+            let errors = [];
+
+            // Regresi data input
+            const nama = document.getElementById('nama_kegiatan').value.trim();
+            const kategori = document.getElementById('kategori_kegiatan').value;
+            const tanggal = document.getElementById('tanggal_pelaksanaan').value;
+            const lokasi = document.getElementById('lokasi_kegiatan').value.trim();
+            const deskripsi = document.getElementById('deskripsi_kegiatan').value.trim();
+
+            // Validasi input kosong
+            if (nama === '') {
+                errors.push('Nama Kegiatan wajib diisi.');
+            }
+            if (kategori === '') {
+                errors.push('Kategori Kegiatan wajib dipilih.');
+            }
+            if (tanggal === '') {
+                errors.push('Tanggal Pelaksanaan wajib diisi.');
+            }
+            if (lokasi === '') {
+                errors.push('Lokasi Kegiatan wajib diisi.');
+            }
+            if (deskripsi === '') {
+                errors.push('Deskripsi Kegiatan wajib diisi.');
+            }
+
+            // Tampilkan error jika validasi JS gagal
+            if (errors.length > 0) {
+                e.preventDefault(); // Batalkan pengiriman form
+                errorBox.style.display = 'block';
+                errorBox.innerHTML = '<ul style="margin:0; padding-left:20px;">' + 
+                    errors.map(err => `<li>${err}</li>`).join('') + 
+                    '</ul>';
+            } else {
+                errorBox.style.display = 'none';
+            }
+        });
+    }
+});</script>
+});
 </body>
 
 </html>
