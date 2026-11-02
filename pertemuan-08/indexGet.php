@@ -1,4 +1,27 @@
 <?php
+<?php
+function e($value): string
+{
+    return htmlspecialchars((string) $value, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+}
+
+foreach (['nama', 'email', 'semester', 'tanggal', 'jenis_pesan', 'prodi', 'pesan'] as $key) {
+    if (isset($_GET[$key]) && is_scalar($_GET[$key])) {
+        echo e($_GET[$key]) . '<br>';
+    }
+}
+
+$minat = $_GET['minat'] ?? [];
+if (is_array($minat)) {
+    foreach ($minat as $item) {
+        if (is_scalar($item)) {
+            echo e($item) . '<br>';
+        }
+    }
+}
+?>
+
+<?php
 //P7
 echo $_GET["nama"] . "<br>";
 echo $_GET["email"] . "<br>";
@@ -157,7 +180,7 @@ switch ($programStudi) {
 				<a target="_blank" href="https://github.com/citrakrnaa<?= PROFIL_GITHUB ?>">profil GitHub saya</a>.
 			</p>
 
-			<form id="contactForm" action="index.php" method="get" novalidate>
+			<form id="contactForm" action="indexGet.php" method="get" novalidate>
 				<div class="form-group">
 					<label for="nama">Nama Lengkap</label><br />
 
@@ -203,10 +226,10 @@ switch ($programStudi) {
 				<div class="form-group">
 					<p>Topik yang Diminati</p>
 
-					<input type="checkbox" id="minat-html" name="minat" value="HTML" />
+					<input type="checkbox" id="minat-html" name="minat[]" value="HTML" />
 					<label for="minat-html">HTML</label>
 
-					<input type="checkbox" id="minat-css" name="minat" value="CSS" />
+					<input type="checkbox" id="minat-css" name="minat[]" value="CSS" />
 					<label for="minat-css">CSS</label>
 				</div>
 

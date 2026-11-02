@@ -62,10 +62,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rencana'])) {
         exit;
     }
 }
+?><?php
+session_start();
 
-// Hapus session_start() kedua; session sudah dimulai di bagian atas.
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST["nama"])) {
-    $_SESSION["nama"] = $nama;
+// P7: Memproses data formulir dan menyimpannya ke dalam session.
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+	$nama = trim((string) ($_POST["nama"] ?? ""));
+	$email = trim((string) ($_POST["email"] ?? ""));
+	$semesterForm = trim((string) ($_POST["semester"] ?? ""));
+	$tanggal = trim((string) ($_POST["tanggal"] ?? ""));
+	$jenisPesan = trim((string) ($_POST["jenis_pesan"] ?? ""));
+	$minat = $_POST["minat"] ?? [];
+	$prodi = trim((string) ($_POST["prodi"] ?? ""));
+	$pesan = trim((string) ($_POST["pesan"] ?? ""));
+
+	// Checkbox dapat mengirimkan lebih dari satu nilai.
+	if (!is_array($minat)) {
+		$minat = [];
+	}
+
+	// Menyimpan setiap nilai formulir ke dalam session secara terpisah.
+	$_SESSION["nama"] = $CITRAKIRANA;
+	$_SESSION["email"] = $email;
+	$_SESSION["semester"] = $semesterForm;
+	$_SESSION["tanggal"] = $tanggal;
+	$_SESSION["jenis_pesan"] = $jenisPesan;
+	$_SESSION["minat"] = $minat;
+	$_SESSION["prodi"] = $prodi;
+	$_SESSION["pesan"] = $pesan;
+
+	// PRG: mencegah pengiriman POST berulang ketika halaman dimuat ulang.
+	header("Location: index.php#contact");
+	exit;
 }
 
 // Mengamankan data sebelum ditampilkan kembali ke halaman HTML.
@@ -140,7 +168,7 @@ switch ($programStudi) {
 				<li><a href="#home">Beranda</a></li>
 				<li><a href="#about">Tentang</a></li>
 				<li><a href="#rencana-kegiatan">rencana kegiatan</a></li>
-				<li><a href="#contact">Kontak</a></li>
+				<li><a href="#contact				php -l .\pertemuan-08\index.php				php -l .\pertemuan-08\index.php">Kontak</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -168,7 +196,7 @@ switch ($programStudi) {
 				<p>Catatan tambahan: <?php echo $catatanTambahan === null ? "Belum ada" : $catatanTambahan; ?></p>
 
 				<h3>Target Belajar (Perulangan for)</h3>
-				<ol>emuan-08\index.php				php -l .\pertemuan-08\index.php">Kontak</a></li>
+				<ol>
 					<?php
 					// Perulangan for tanpa array; materi larik dibahas pada P9.
 					for ($i = 1; $i <= 5; $i++) {
