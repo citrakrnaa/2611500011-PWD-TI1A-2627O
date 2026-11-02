@@ -261,8 +261,37 @@ switch ($programStudi) {
 		</section>
 
 		<section id="rencana-kegiatan">
+			
 
-		
+    <form id="formKegiatan" action="proses.php" method="POST">
+        <div>
+            <label for="nama">Nama Kegiatan:</label>
+            <input type="text" id="nama" name="nama_kegiatan" required>
+        </div>
+        <div>
+            <label for="kategori">Kategori Kegiatan:</label>
+            <input type="text" id="kategori" name="kategori_kegiatan" required>
+        </div>
+        <div>
+            <label for="tanggal">Tanggal Pelaksanaan:</label>
+            <input type="date" id="tanggal" name="tanggal_pelaksanaan" required>
+        </div>
+        <div>
+            <label for="lokasi">Lokasi Kegiatan:</label>
+            <input type="text" id="lokasi" name="lokasi_kegiatan" required>
+        </div>
+        <div>
+            <label for="deskripsi">Deskripsi Kegiatan:</label>
+            <textarea id="deskripsi" name="deskripsi_kegiatan" rows="4" required></textarea>
+        </div>
+
+        <button type="submit">Kirim</button>
+        <button type="reset">Batal</button>
+    </form>
+</section>
+
+
+
 
 			</form>
 
