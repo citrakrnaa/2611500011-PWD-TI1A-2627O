@@ -63,7 +63,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_rencana'])) {
     }
 }
 ?><?php
-session_start();
 
 // P7: Memproses data formulir dan menyimpannya ke dalam session.
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
@@ -104,7 +103,7 @@ $namaMahasiswa = "Citra Kirana";
 $programStudi = "TI";
 $tahunAkademik = "2026/2027";
 $semester = 1;
-$ipk = 3.75;
+$ipk = 4;
 $statusAktif = true;
 $catatanTambahan = null;
 
@@ -355,13 +354,13 @@ switch ($programStudi) {
 				</div>
 
 				<div class="form-group">
-					<label for="email">2611500011@mahasiswa.atmaluhur.ac.id</label><br />
+					<label for="email">Email</label><br />
 
 					<input class="input-form" type="email" id="email" name="email" placeholder="nama@email.com" required />
 				</div>
 
 				<div class="form-group">
-					<label for="semester">1</label><br />
+					<label for="semester">Semester</label><br />
 
 					<input class="input-form" type="number" id="semester" name="semester" min="1" max="14" required />
 				</div>
@@ -439,7 +438,7 @@ switch ($programStudi) {
 	</main>
 
 	<footer>
-		<p>&copy; <?= date("Y") ?> <?php echo $citra; ?> [<?= $nim ?>]</p>
+		<p>&copy; <?= date("Y") ?> <?php echo $namaMahasiswa; ?> [<?= $nim ?>]</p>
 	</footer>
 	<script src="script.js"></script>
     }<script>
